@@ -1,0 +1,318 @@
+/* Smart FAQ Schema — Frontend Styles
+   CSS variables are set on .sfaq-section by PHP (not :root)
+   so they always override theme styles reliably.
+   All rules scoped under .sfaq-section to prevent leaking. */
+
+/* ===== VARIABLE DEFAULTS (fallback if PHP inline style fails) ===== */
+.sfaq-section {
+	--sfaq-q-text:        #111111;
+	--sfaq-q-bg:          #ffffff;
+	--sfaq-q-border:      #dddddd;
+	--sfaq-q-active-bg:   #cc0000;
+	--sfaq-q-active-text: #ffffff;
+	--sfaq-q-hover-bg:    #f5f5f5;
+	--sfaq-q-hover-text:  #111111;
+	--sfaq-a-text:        #333333;
+	--sfaq-a-bg:          #ffffff;
+	--sfaq-icon-color:    #cc0000;
+	--sfaq-icon-active:   #ffffff;
+	--sfaq-font-family:   inherit;
+	--sfaq-font-size-q:   16px;
+	--sfaq-font-size-a:   15px;
+	--sfaq-font-weight-q: 600;
+	--sfaq-radius:        10px;
+}
+
+/* ===== BASE RESET ===== */
+.sfaq-section *,
+.sfaq-section *::before,
+.sfaq-section *::after {
+	box-sizing: border-box;
+}
+
+.sfaq-section {
+	font-family: var(--sfaq-font-family);
+	max-width: 100%;
+	margin: 32px 0;
+}
+
+/* Section heading (H2) */
+.sfaq-section .sfaq-section-title {
+	font-size: clamp(20px, 3vw, 26px);
+	font-weight: 700;
+	color: var(--sfaq-q-text);
+	margin: 0 0 20px;
+	line-height: 1.3;
+	/* Override any theme h2 styles */
+	padding: 0;
+	border: none;
+	background: none;
+}
+
+/* ===== ACCORDION ITEM ===== */
+.sfaq-section .sfaq-item {
+	margin-bottom: 8px;
+	border-radius: var(--sfaq-radius);
+	overflow: hidden;
+}
+
+/* ===== QUESTION BUTTON — full browser reset ===== */
+.sfaq-section .sfaq-question {
+	/* Hard reset — removes ALL browser button default styles */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: var(--sfaq-q-bg);
+	border: 1px solid var(--sfaq-q-border);
+	border-radius: var(--sfaq-radius);
+	box-shadow: none;
+	color: var(--sfaq-q-text);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-family: var(--sfaq-font-family);
+	font-size: var(--sfaq-font-size-q);
+	font-weight: var(--sfaq-font-weight-q);
+	line-height: 1.4;
+	margin: 0;
+	outline: none;
+	padding: 14px 18px;
+	text-align: left;
+	text-decoration: none;
+	transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	width: 100%;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Hover */
+.sfaq-section .sfaq-question:hover {
+	background: var(--sfaq-q-hover-bg);
+	color: var(--sfaq-q-hover-text);
+}
+
+/* Active / open */
+.sfaq-section .sfaq-question[aria-expanded="true"] {
+	background: var(--sfaq-q-active-bg);
+	color: var(--sfaq-q-active-text);
+	border-color: var(--sfaq-q-active-bg);
+	border-radius: var(--sfaq-radius) var(--sfaq-radius) 0 0;
+}
+
+/* Focus visible */
+.sfaq-section .sfaq-question:focus-visible {
+	outline: 2px solid var(--sfaq-q-active-bg);
+	outline-offset: 2px;
+}
+
+/* ===== ICON ===== */
+.sfaq-section .sfaq-icon-wrap {
+	flex-shrink: 0;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1;
+	font-family: Arial, sans-serif;
+	/* Use icon color variable */
+	color: var(--sfaq-icon-color);
+	transition: color 0.2s ease;
+}
+
+/* When question is active, icon inherits white (from active text) */
+.sfaq-section .sfaq-question[aria-expanded="true"] .sfaq-icon-wrap {
+	color: var(--sfaq-icon-active);
+}
+
+/* ===== QUESTION TEXT (H3 reset) ===== */
+.sfaq-section .sfaq-question-text {
+	all: unset;
+	display: block;
+	flex: 1;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: 1.4;
+	/* Color inherited from button — always matches active/hover state */
+	color: inherit;
+}
+
+/* ===== ANSWER PANEL ===== */
+.sfaq-section .sfaq-answer {
+	background: var(--sfaq-a-bg);
+	border: 1px solid var(--sfaq-q-border);
+	border-top: 0;
+	border-radius: 0 0 var(--sfaq-radius) var(--sfaq-radius);
+	overflow: hidden;
+}
+
+/* Slide-in animation when answer opens */
+.sfaq-section .sfaq-answer:not([hidden]) {
+	animation: sfaqSlideIn 0.2s ease;
+}
+
+@keyframes sfaqSlideIn {
+	from { opacity: 0; transform: translateY(-6px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+.sfaq-section .sfaq-answer-inner {
+	padding: 16px 20px;
+	font-size: var(--sfaq-font-size-a);
+	line-height: 1.7;
+	color: var(--sfaq-a-text);
+}
+
+.sfaq-section .sfaq-answer-inner p:first-child { margin-top: 0; }
+.sfaq-section .sfaq-answer-inner p:last-child  { margin-bottom: 0; }
+.sfaq-section .sfaq-answer-inner a { color: var(--sfaq-q-active-bg); }
+
+
+/* ===========================================
+   STYLE 1 — Classic Accordion (default)
+   =========================================== */
+/* Already covered by base rules above */
+
+
+/* ===========================================
+   STYLE 2 — Card Style
+   =========================================== */
+.sfaq-style2 .sfaq-item {
+	border-radius: var(--sfaq-radius);
+	box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+	margin-bottom: 14px;
+	overflow: visible;
+}
+.sfaq-style2 .sfaq-question {
+	border: 0;
+	border-radius: var(--sfaq-radius);
+}
+.sfaq-style2 .sfaq-question[aria-expanded="true"] {
+	border-radius: var(--sfaq-radius) var(--sfaq-radius) 0 0;
+}
+.sfaq-style2 .sfaq-answer {
+	border: 0;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+	border-radius: 0 0 var(--sfaq-radius) var(--sfaq-radius);
+}
+
+
+/* ===========================================
+   STYLE 3 — Minimal Line
+   =========================================== */
+.sfaq-style3 .sfaq-item {
+	border-radius: 0;
+	border-bottom: 1px solid var(--sfaq-q-border);
+	margin-bottom: 0;
+	overflow: visible;
+}
+.sfaq-style3 .sfaq-question {
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	padding: 16px 4px;
+}
+.sfaq-style3 .sfaq-question:hover {
+	background: transparent;
+	color: var(--sfaq-q-active-bg);
+}
+.sfaq-style3 .sfaq-question[aria-expanded="true"] {
+	background: transparent;
+	color: var(--sfaq-q-active-bg);
+	border-radius: 0;
+}
+.sfaq-style3 .sfaq-question[aria-expanded="true"] .sfaq-icon-wrap {
+	color: var(--sfaq-q-active-bg);
+}
+.sfaq-style3 .sfaq-answer {
+	border: 0;
+	border-radius: 0;
+}
+.sfaq-style3 .sfaq-answer-inner {
+	padding: 8px 4px 16px;
+}
+
+
+/* ===========================================
+   STYLE 4 — Bold Left Border
+   =========================================== */
+.sfaq-style4 .sfaq-item {
+	border-left: 4px solid var(--sfaq-q-border);
+	border-radius: 0 var(--sfaq-radius) var(--sfaq-radius) 0;
+	margin-bottom: 12px;
+	transition: border-left-color 0.2s ease;
+}
+.sfaq-style4 .sfaq-item.sfaq-open {
+	border-left-color: var(--sfaq-q-active-bg);
+}
+.sfaq-style4 .sfaq-question {
+	border: 0;
+	border-bottom: 1px solid var(--sfaq-q-border);
+	border-radius: 0;
+}
+.sfaq-style4 .sfaq-question[aria-expanded="true"] {
+	border-radius: 0;
+}
+.sfaq-style4 .sfaq-answer {
+	border: 0;
+	border-radius: 0;
+}
+
+
+/* ===========================================
+   STYLE 5 — Numbered Steps
+   =========================================== */
+.sfaq-style5 .sfaq-accordion { counter-reset: sfaq-num; }
+.sfaq-style5 .sfaq-item      { counter-increment: sfaq-num; margin-bottom: 12px; }
+
+/* Show number in icon circle — hide +/− */
+.sfaq-style5 .sfaq-icon-wrap {
+	background: var(--sfaq-icon-color);
+	color: #fff;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	font-size: 13px;
+	font-weight: 800;
+}
+.sfaq-style5 .sfaq-icon-wrap::before {
+	content: counter(sfaq-num);
+	display: block;
+}
+.sfaq-style5 .sfaq-icon-plus,
+.sfaq-style5 .sfaq-icon-minus { display: none !important; }
+
+.sfaq-style5 .sfaq-question[aria-expanded="true"] .sfaq-icon-wrap {
+	background: var(--sfaq-icon-active);
+	color: var(--sfaq-q-active-bg);
+}
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+	.sfaq-section .sfaq-question {
+		padding: 12px 14px;
+		gap: 10px;
+	}
+	.sfaq-section .sfaq-answer-inner {
+		padding: 12px 16px;
+	}
+	.sfaq-section .sfaq-section-title {
+		font-size: clamp(18px, 5vw, 22px);
+		margin-bottom: 14px;
+	}
+}
+
+@media (max-width: 380px) {
+	.sfaq-section .sfaq-question      { padding: 10px 12px; gap: 8px; }
+	.sfaq-section .sfaq-answer-inner  { padding: 10px 12px; }
+}
+
+/* ===== PRINT ===== */
+@media print {
+	.sfaq-section .sfaq-question { background: #f5f5f5 !important; color: #000 !important; }
+	.sfaq-section .sfaq-answer[hidden] { display: block !important; }
+	.sfaq-section .sfaq-icon-wrap { display: none; }
+}
