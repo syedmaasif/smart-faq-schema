@@ -97,5 +97,14 @@ Yes. The plugin automatically calls cache-clear functions for WP Rocket, W3 Tota
 
 == Upgrade Notice ==
 
-= 1.1.0 =
+= 1.1.1 =
 Security and coding standards update. Upgrade recommended.
+
+
+## Plugin Testing - PDF file
+* Dashboard
+* Bulk Manager
+* Frontend UI
+* Schema Validated
+* Plugin Check Passed
+* VirusTotal Clean
