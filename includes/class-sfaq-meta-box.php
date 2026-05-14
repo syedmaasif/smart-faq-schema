@@ -290,5 +290,8 @@ class SFAQ_Meta_Box {
 			}
 		}
 		update_post_meta( $post_id, '_sfaq_faqs', $faqs );
+		// Clear dashboard count cache so stats update immediately
+		delete_transient( 'sfaq_posts_with_faq_count' );
+		wp_cache_delete( 'sfaq_posts_with_faq_count', 'smart_faq_schema' );
 	}
 }

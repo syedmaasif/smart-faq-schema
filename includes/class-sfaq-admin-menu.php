@@ -8,7 +8,8 @@ class SFAQ_Admin_Menu {
 	public static function init() {
 		add_action( 'admin_menu',            array( __CLASS__, 'register_menus' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_settings_assets' ) );
-		add_action( 'admin_post_sfaq_save_settings', array( __CLASS__, 'save_settings' ) );
+		add_action( 'admin_post_sfaq_save_settings',       array( __CLASS__, 'save_settings' ) );
+		add_action( 'admin_post_sfaq_reset_colors',         array( __CLASS__, 'reset_colors' ) );
 	}
 
 	public static function register_menus() {
@@ -361,6 +362,19 @@ class SFAQ_Admin_Menu {
 					<span class="sfaq-save-note"><?php esc_html_e( 'Cache will be cleared automatically on save.', 'smart-faq-schema' ); ?></span>
 				</div>
 			</form>
+
+			<!-- Reset to Defaults form (separate form, no nonce conflict) -->
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="sfaq-reset-form" onsubmit="return confirm('<?php esc_attr_e( 'Reset all colors and typography to plugin defaults? This cannot be undone.', 'smart-faq-schema' ); ?>');">
+				<?php wp_nonce_field( 'sfaq_reset_colors' ); ?>
+				<input type="hidden" name="action" value="sfaq_reset_colors">
+				<input type="hidden" name="_redirect" value="<?php echo esc_attr( admin_url( 'admin.php?page=sfaq-appearance' ) ); ?>">
+				<div class="sfaq-reset-row">
+					<button type="submit" class="sfaq-btn sfaq-btn-ghost sfaq-btn-large">
+						&#8635; <?php esc_html_e( 'Reset Colors & Typography to Defaults', 'smart-faq-schema' ); ?>
+					</button>
+					<span class="sfaq-save-note"><?php esc_html_e( 'Resets all colors, fonts and border radius to the plugin defaults.', 'smart-faq-schema' ); ?></span>
+				</div>
+			</form>
 		</div>
 		<?php
 	}
@@ -592,6 +606,9 @@ class SFAQ_Admin_Menu {
 		if ( isset( $_GET['sfaq_saved'] ) && '1' === sanitize_key( $_GET['sfaq_saved'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only success flag set by wp_safe_redirect after nonce-verified save.
 			echo '<div class="sfaq-notice sfaq-notice-success">&#10004; ' . esc_html__( 'Settings saved and cache cleared.', 'smart-faq-schema' ) . '</div>';
 		}
+		if ( isset( $_GET['sfaq_reset'] ) && '1' === sanitize_key( $_GET['sfaq_reset'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only success flag set by wp_safe_redirect after nonce-verified reset.
+			echo '<div class="sfaq-notice sfaq-notice-reset">&#8635; ' . esc_html__( 'Colors and typography reset to defaults. Cache cleared.', 'smart-faq-schema' ) . '</div>';
+		}
 	}
 
 	/**
@@ -631,4 +648,47 @@ class SFAQ_Admin_Menu {
 
 		return $count;
 	}
+
+	/**
+	 * Reset all color/typography options to plugin defaults.
+	 */
+	public static function reset_colors() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'smart-faq-schema' ) );
+		}
+		check_admin_referer( 'sfaq_reset_colors' );
+
+		$defaults = array(
+			'color_q_text'        => '#111111',
+			'color_q_bg'          => '#ffffff',
+			'color_q_border'      => '#dddddd',
+			'color_q_active_bg'   => '#cc0000',
+			'color_q_active_text' => '#ffffff',
+			'color_q_hover_bg'    => '#f5f5f5',
+			'color_q_hover_text'  => '#111111',
+			'color_a_text'        => '#333333',
+			'color_a_bg'          => '#ffffff',
+			'color_icon'          => '#cc0000',
+			'color_icon_active'   => '#ffffff',
+			'font_family'         => 'inherit',
+			'font_size_q'         => '16',
+			'font_size_a'         => '15',
+			'font_weight_q'       => '600',
+			'border_radius'       => '10',
+		);
+
+		foreach ( $defaults as $key => $value ) {
+			update_option( 'sfaq_' . $key, $value );
+		}
+
+		SFAQ_Cache::flush();
+
+		$redirect = isset( $_POST['_redirect'] )
+			? sanitize_text_field( wp_unslash( $_POST['_redirect'] ) )
+			: admin_url( 'admin.php?page=sfaq-appearance' );
+
+		wp_safe_redirect( add_query_arg( 'sfaq_reset', '1', $redirect ) );
+		exit;
+	}
+
 }

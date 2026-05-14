@@ -3,7 +3,7 @@
  * Plugin Name: Smart FAQ Schema
  * Plugin URI:  https://wordpress.org/plugins/smart-faq-schema/
  * Description: Add beautiful FAQ sections with FAQPage schema to any post, page, or product. Elementor-safe, mobile-optimized, with 5 accordion UI styles.
- * Version:     1.1.0
+ * Version:     1.1.3
  * Author:      Your Name
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Constants
-define( 'SFAQ_VERSION',     '1.1.0' );
+define( 'SFAQ_VERSION',     '1.1.3' );
 define( 'SFAQ_PLUGIN_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'SFAQ_PLUGIN_URL',  plugin_dir_url( __FILE__ ) );
 define( 'SFAQ_PLUGIN_FILE', __FILE__ );

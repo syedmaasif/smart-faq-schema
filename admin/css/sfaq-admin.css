@@ -885,3 +885,21 @@
     .sfaq-color-grid { grid-template-columns: 1fr; }
     .sfaq-action-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== RESET ROW ===== */
+.sfaq-reset-form { margin-top: 12px; }
+.sfaq-reset-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+.sfaq-notice-reset {
+	background: #e8f4fd;
+	color: #0c5460;
+	border: 1px solid #9fd3ed;
+	padding: 12px 18px;
+	border-radius: 8px;
+	margin-bottom: 20px;
+	font-size: 13px;
+	font-weight: 600;
+}

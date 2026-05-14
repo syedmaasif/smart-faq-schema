@@ -92,12 +92,8 @@
 		setIcon( btn, false );
 	}
 
-	function setIcon( btn, isOpen ) {
-		var plus  = btn.querySelector( '.sfaq-icon-plus' );
-		var minus = btn.querySelector( '.sfaq-icon-minus' );
-		if ( plus )  plus.style.display  = isOpen ? 'none' : '';
-		if ( minus ) minus.style.display = isOpen ? ''     : 'none';
-	}
+	// Icon visibility is handled purely by CSS via aria-expanded selector
+	function setIcon() {}
 
 	// Arrow key helpers
 	function focusNext( current, section ) {

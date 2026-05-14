@@ -212,7 +212,7 @@ class SFAQ_Frontend {
 							id="<?php echo esc_attr( $faq_id ); ?>-btn">
 						<span class="sfaq-icon-wrap" aria-hidden="true">
 							<span class="sfaq-icon-plus">+</span>
-							<span class="sfaq-icon-minus" style="display:none">&#8722;</span>
+							<span class="sfaq-icon-minus">&#8722;</span>
 						</span>
 						<h3 class="sfaq-question-text"><?php echo esc_html( $faq['question'] ); ?></h3>
 					</button>
